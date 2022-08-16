@@ -1,6 +1,10 @@
 import { Box, Flex, Image, Stack, Text } from "@chakra-ui/react";
-import React, { FC, memo } from "react";
-import { PokemonDetailedData } from "../../types/api/pokemon";
+import axios from "axios";
+import { FC, memo, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { usePokemonTypeArr } from "../../hooks/usePokemonTypeArr";
+import { usePokemonTypes } from "../../hooks/usePokemonTypes";
+import { PokemonData, PokemonDetailedData, PokemonTypeObj, PokemonTypes } from "../../types/api/pokemon";
 
 type Props = {
   pokemon: PokemonDetailedData;
@@ -8,13 +12,32 @@ type Props = {
 
 export const Card: FC<Props> = memo((props) => {
   const { pokemon } = props;
+  const navigate = useNavigate();
+
+  const {setPokemonType,setPokemonTypeArr,pokemonType} = usePokemonTypeArr();
+  const {createPokemonTypeArr} = usePokemonTypes();
+
+  
+
+
+  const onClickTypes = (types : PokemonTypes) => {
+    const setTypeAndArr =  async(types : PokemonTypes) => {
+      setPokemonType(types.type.name);
+      const pokemonTypeArr = await createPokemonTypeArr(types.type.url);
+      setPokemonTypeArr(pokemonTypeArr);
+    };
+    setTypeAndArr(types);
+    navigate(`/${pokemonType}`,{replace : true});
+  };
+
+
   return (
     <Box
       bg="white"
       borderRadius="20px"
       shadow="md"
-      w={{base : 150,md : 180,lg : 250}}
-      ml={{base : 5 , md : 15, lg : 25}}
+      w={{ base: 150, md: 180, lg: 250 }}
+      ml={{ base: 5, md: 15, lg: 25 }}
       mt="2"
       p="3"
     >
@@ -25,14 +48,42 @@ export const Card: FC<Props> = memo((props) => {
           borderRadius="full"
         />
         <Text fontSize="lg">{pokemon.name}</Text>
-        <Text fontSize="sm">
-          {pokemon.types.length < 2
-            ? "#" + pokemon.types[0].type.name
-            : "#" +
-              pokemon.types[0].type.name +
-              " #" +
-              pokemon.types[1].type.name}
-        </Text>
+        {pokemon.types.length < 2 ? (
+          <Text
+            as="a"
+            fontSize="sm"
+            _hover={{cursor : "pointer",textColor : "blue.500"}}
+            onClick={() =>
+              onClickTypes(pokemon.types[0])
+            }
+          >
+            {pokemon.types[0].type.name}
+          </Text>
+        ) : (
+          <Flex justify="center">
+            <Text
+              as="a"
+              fontSize="sm"
+              _hover={{cursor : "pointer",textColor : "blue.500"}}
+              onClick={() =>
+                onClickTypes(pokemon.types[0])
+              }
+            >
+              {pokemon.types[0].type.name}
+            </Text>
+            <p>,</p>
+            <Text
+              as="a"
+              fontSize="sm"
+              _hover={{cursor : "pointer",textColor : "blue.500"}}
+              onClick={() =>
+                onClickTypes(pokemon.types[1])
+              }
+            >
+              {pokemon.types[1].type.name}
+            </Text>
+          </Flex>
+        )}
       </Stack>
     </Box>
   );

@@ -3,8 +3,8 @@ import { Box, Flex, IconButton } from "@chakra-ui/react";
 import React, { FC, memo } from "react";
 
 type Props = {
-  onClickLeft : ()=> void;
-  onClickRight : () => void;
+  onClickLeft? : ()=> void;
+  onClickRight? : () => void;
 }
 
 export const Header: FC<Props> = memo((props) => {

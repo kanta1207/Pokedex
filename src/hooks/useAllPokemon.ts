@@ -20,8 +20,7 @@ export const useAllPokemon = () => {
         .get(pokemonUrl as string)
         .then((res) => {
           resolve(res.data)})
-        .catch((error) => reject(error))
-        .finally(() => setLoading(false));
+        .catch((error) => reject(error));
     });
   }, [pokemonUrl]);
 

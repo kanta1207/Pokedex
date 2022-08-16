@@ -16,21 +16,25 @@ export type PokemonDetailedData = {
     sprites : Sprites;
     height : number;
     weight : number;
-    types : Array<Types>
+    types : Array<PokemonTypes>
 };
 
-type Types = {
-    type : Type;
+export type PokemonTypes = {
+    type : PokemonType;
 };
 
-type Type = {
+export type PokemonType = {
     name : string;
     url : string;
-}
+};
 
 type Sprites = {
     front_default : string;
     back_default : string;
     front_shiny : string;
     back_shiny : string;
+};
+
+export type PokemonTypeObj = {
+    pokemon : PokemonData;
 }
