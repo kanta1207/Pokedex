@@ -1,15 +1,16 @@
 import { ArrowLeftIcon, ArrowRightIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton } from "@chakra-ui/react";
 import React, { FC, memo } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
-  onClickLeft : ()=> void;
-  onClickRight : () => void;
+  onClickLeft? : ()=> void;
+  onClickRight? : () => void;
 }
 
 export const Header: FC<Props> = memo((props) => {
   const {onClickLeft,onClickRight} = props;
-
+  const navigate = useNavigate();
   return (
     <Box>
       <Flex
@@ -32,7 +33,7 @@ export const Header: FC<Props> = memo((props) => {
             _hover={{ cursor: "pointer", bg: "gray.100" }}
           />
         </Flex>
-        <Flex as="h1" fontWeight="bold" fontSize={{ base: "20px", lg: "30px" }}>
+        <Flex as="h1" fontWeight="bold" fontSize={{ base: "20px", lg: "30px" }} onClick={()=>navigate("/")}>
           Pokedex
         </Flex>
         <Flex>

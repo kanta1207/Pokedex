@@ -10,23 +10,24 @@ import { usePokemonUrl } from "./usePokemonUrl";
 export const useAllPokemon = () => {
   const [pokemons, setPokemons] = useState<Array<PokemonDetailedData>>([]);
   const [loading, setLoading] = useState(false);
-  const {pokemonUrl} = usePokemonUrl()
+
+  const { pokemonUrl } = usePokemonUrl();
 
   const getAllPokemon = useCallback(() => {
     console.log("getAllPokemon");
-    setLoading(true);
     return new Promise<PokeApi>((resolve, reject) => {
       axios
         .get(pokemonUrl as string)
         .then((res) => {
-          resolve(res.data)})
-        .catch((error) => reject(error))
-        .finally(() => setLoading(false));
+          resolve(res.data);
+        })
+        .catch((error) => reject(error));
     });
   }, [pokemonUrl]);
 
   const loadAllData = useCallback(async (dataArr: Array<PokemonData>) => {
-    console.log("loadAllData")
+    setLoading(true);
+    console.log("loadAllData");
     const pokemonData = await Promise.all(
       ///複数のpromise処理を並列で行う
       dataArr.map((data) => {
@@ -44,7 +45,7 @@ export const useAllPokemon = () => {
     );
     setPokemons(pokemonData);
   }, []);
-  return { getAllPokemon, loading, pokemons, loadAllData };
+  return { getAllPokemon, setLoading, loading, pokemons, loadAllData};
 };
 
 //axios使わないver
