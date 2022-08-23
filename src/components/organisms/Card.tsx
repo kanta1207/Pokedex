@@ -4,7 +4,12 @@ import { FC, memo, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePokemonTypeArr } from "../../hooks/usePokemonTypeArr";
 import { usePokemonTypes } from "../../hooks/usePokemonTypes";
-import { PokemonData, PokemonDetailedData, PokemonTypeObj, PokemonTypes } from "../../types/api/pokemon";
+import {
+  PokemonData,
+  PokemonDetailedData,
+  PokemonTypeObj,
+  PokemonTypes,
+} from "../../types/api/pokemon";
 
 type Props = {
   pokemon: PokemonDetailedData;
@@ -14,22 +19,19 @@ export const Card: FC<Props> = memo((props) => {
   const { pokemon } = props;
   const navigate = useNavigate();
 
-  const {setPokemonType,setPokemonTypeArr,pokemonType} = usePokemonTypeArr();
-  const {createPokemonTypeArr} = usePokemonTypes();
+  const { setPokemonType, setPokemonTypeArr} =
+    usePokemonTypeArr();
 
-  
-
-
-  const onClickTypes = (types : PokemonTypes) => {
-    const setTypeAndArr =  async(types : PokemonTypes) => {
-      setPokemonType(types.type.name);
-      const pokemonTypeArr = await createPokemonTypeArr(types.type.url);
-      setPokemonTypeArr(pokemonTypeArr);
-    };
-    setTypeAndArr(types);
-    navigate(`/${pokemonType}`,{replace : true});
+  const onClickTypes = async (types: PokemonTypes) => {
+    const pokemonTypeArr = await axios.get(types.type.url).then((res) => {
+      const pokemonArr: Array<PokemonTypeObj> = res.data.pokemon;
+      const pokemonDataArr = pokemonArr.map((pokemon) => pokemon.pokemon);
+      return pokemonDataArr;
+    });
+    setPokemonType(types.type.name);
+    setPokemonTypeArr(pokemonTypeArr);
+    navigate(`/${types.type.name}`)
   };
-
 
   return (
     <Box
@@ -52,10 +54,8 @@ export const Card: FC<Props> = memo((props) => {
           <Text
             as="a"
             fontSize="sm"
-            _hover={{cursor : "pointer",textColor : "blue.500"}}
-            onClick={() =>
-              onClickTypes(pokemon.types[0])
-            }
+            _hover={{ cursor: "pointer", textColor: "blue.500" }}
+            onClick={() => onClickTypes(pokemon.types[0])}
           >
             {pokemon.types[0].type.name}
           </Text>
@@ -64,10 +64,8 @@ export const Card: FC<Props> = memo((props) => {
             <Text
               as="a"
               fontSize="sm"
-              _hover={{cursor : "pointer",textColor : "blue.500"}}
-              onClick={() =>
-                onClickTypes(pokemon.types[0])
-              }
+              _hover={{ cursor: "pointer", textColor: "blue.500" }}
+              onClick={() => onClickTypes(pokemon.types[0])}
             >
               {pokemon.types[0].type.name}
             </Text>
@@ -75,10 +73,8 @@ export const Card: FC<Props> = memo((props) => {
             <Text
               as="a"
               fontSize="sm"
-              _hover={{cursor : "pointer",textColor : "blue.500"}}
-              onClick={() =>
-                onClickTypes(pokemon.types[1])
-              }
+              _hover={{ cursor: "pointer", textColor: "blue.500" }}
+              onClick={() => onClickTypes(pokemon.types[1])}
             >
               {pokemon.types[1].type.name}
             </Text>
