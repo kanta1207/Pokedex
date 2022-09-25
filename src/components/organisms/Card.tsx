@@ -1,11 +1,10 @@
 import { Box, Flex, Image, Stack, Text } from "@chakra-ui/react";
 import axios from "axios";
-import { FC, memo, useCallback, useEffect } from "react";
+import { FC, memo} from "react";
 import { useNavigate } from "react-router-dom";
 import { usePokemonTypeArr } from "../../hooks/usePokemonTypeArr";
-import { usePokemonTypes } from "../../hooks/usePokemonTypes";
+
 import {
-  PokemonData,
   PokemonDetailedData,
   PokemonTypeObj,
   PokemonTypes,
@@ -19,8 +18,7 @@ export const Card: FC<Props> = memo((props) => {
   const { pokemon } = props;
   const navigate = useNavigate();
 
-  const { setPokemonType, setPokemonTypeArr} =
-    usePokemonTypeArr();
+  const { setPokemonType, setPokemonTypeArr } = usePokemonTypeArr();
 
   const onClickTypes = async (types: PokemonTypes) => {
     const pokemonTypeArr = await axios.get(types.type.url).then((res) => {
@@ -30,7 +28,7 @@ export const Card: FC<Props> = memo((props) => {
     });
     setPokemonType(types.type.name);
     setPokemonTypeArr(pokemonTypeArr);
-    navigate(`/${types.type.name}`)
+    navigate(`/${types.type.name}`);
   };
 
   return (
@@ -44,17 +42,22 @@ export const Card: FC<Props> = memo((props) => {
       p="3"
     >
       <Stack textAlign="center">
-        <Image
-          m="auto"
-          src={pokemon.sprites.front_default}
-          borderRadius="full"
-        />
+        {pokemon.sprites.front_default !== null ? (
+          <Image
+            m="auto"
+            src={pokemon.sprites.front_default}
+            borderRadius="full"
+          />
+        ) : (
+          <h2>No Image</h2>
+        )}
+
         <Text fontSize="lg">{pokemon.name}</Text>
         {pokemon.types.length < 2 ? (
           <Text
             as="a"
             fontSize="sm"
-            _hover={{ cursor: "pointer", textColor: "blue.500" }}
+            _hover={{ cursor: "pointer", textColor: "blue.500"}}
             onClick={() => onClickTypes(pokemon.types[0])}
           >
             {pokemon.types[0].type.name}

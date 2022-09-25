@@ -7,6 +7,7 @@ import { Card } from "../organisms/Card";
 import { Header } from "../organisms/Header";
 
 export const TypeSearchPage = memo(() => {
+  
   const [arrIndex, setArrIndex] = useState(0);
 
   const { pokemonTypeArr } = usePokemonTypeArr();
@@ -37,10 +38,10 @@ export const TypeSearchPage = memo(() => {
     <>
       <Header
         onClickLeft={() => {
-          if (arrIndex < 0) setArrIndex(arrIndex - 1);
+          if (arrIndex > 0) setArrIndex(arrIndex - 1);
         }}
         onClickRight={() => {
-          if (arrIndex < pokemonTypeArr.length - 1) setArrIndex(arrIndex + 1);
+          if (arrIndex < pokemonTypeArr.length - 2) setArrIndex(arrIndex + 1);
         }}
       />
       {loading ? (

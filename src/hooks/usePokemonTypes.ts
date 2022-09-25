@@ -25,6 +25,6 @@ export const usePokemonTypes = () => {
     setPokemonTypeArr(pokemonTypeArr);
   },[]);
 
-    return {createPokemonTypeArr}
+    return {}
 };
 

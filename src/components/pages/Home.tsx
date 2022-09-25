@@ -1,7 +1,6 @@
 import { Center, Spinner, Wrap, WrapItem } from "@chakra-ui/react";
 import { memo, useEffect, useState } from "react";
 import { useAllPokemon } from "../../hooks/useAllPokemon";
-import { usePokemonTypeArr } from "../../hooks/usePokemonTypeArr";
 import { usePokemonUrl } from "../../hooks/usePokemonUrl";
 import { Card } from "../organisms/Card";
 import { Header } from "../organisms/Header";
@@ -9,7 +8,6 @@ import { Header } from "../organisms/Header";
 export const Home = memo(() => {
   const { getAllPokemon, loadAllData, loading, pokemons } = useAllPokemon();
   const {pokemonUrl,setPokemonUrl} = usePokemonUrl();
-  const {pokemonType} = usePokemonTypeArr()
 
   const [ previous, setPrevious ] = useState<string | null>(null);
   const [ next, setNext ] = useState<string | null>("https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20");
