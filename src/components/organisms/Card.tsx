@@ -1,6 +1,6 @@
 import { Box, Flex, Image, Stack, Text } from "@chakra-ui/react";
 import axios from "axios";
-import { FC, memo} from "react";
+import { FC, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePokemonTypeArr } from "../../hooks/usePokemonTypeArr";
 
@@ -12,10 +12,11 @@ import {
 
 type Props = {
   pokemon: PokemonDetailedData;
+  onOpen: () => void;
 };
 
 export const Card: FC<Props> = memo((props) => {
-  const { pokemon } = props;
+  const { pokemon, onOpen } = props;
   const navigate = useNavigate();
 
   const { setPokemonType, setPokemonTypeArr } = usePokemonTypeArr();
@@ -40,6 +41,8 @@ export const Card: FC<Props> = memo((props) => {
       ml={{ base: 5, md: 15, lg: 25 }}
       mt="2"
       p="3"
+      _hover={{ shadow: "lg",transform : "translateY(-4px)"}}
+      onClick={onOpen}
     >
       <Stack textAlign="center">
         {pokemon.sprites.front_default !== null ? (
@@ -52,12 +55,12 @@ export const Card: FC<Props> = memo((props) => {
           <h2>No Image</h2>
         )}
 
-        <Text fontSize="lg">{pokemon.name}</Text>
+        <Text fontSize="lg" fontWeight="bold">{pokemon.name}</Text>
         {pokemon.types.length < 2 ? (
           <Text
             as="a"
             fontSize="sm"
-            _hover={{ cursor: "pointer", textColor: "blue.500"}}
+            _hover={{ cursor: "pointer", textColor: "blue.500" }}
             onClick={() => onClickTypes(pokemon.types[0])}
           >
             {pokemon.types[0].type.name}
