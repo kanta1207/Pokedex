@@ -1,4 +1,5 @@
-import { Box, Flex, Image, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, SlideFade, Stack, Text } from "@chakra-ui/react";
+import { isVisible } from "@testing-library/user-event/dist/utils";
 import axios from "axios";
 import { FC, memo } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,10 +14,11 @@ import {
 type Props = {
   pokemon: PokemonDetailedData;
   onOpen: () => void;
+  loading: boolean;
 };
 
 export const Card: FC<Props> = memo((props) => {
-  const { pokemon, onOpen } = props;
+  const { pokemon, onOpen ,loading} = props;
   const navigate = useNavigate();
 
   const { setPokemonType, setPokemonTypeArr } = usePokemonTypeArr();
@@ -33,7 +35,8 @@ export const Card: FC<Props> = memo((props) => {
   };
 
   return (
-    <Box
+    <SlideFade in={!loading}>
+      <Box
       bg="white"
       borderRadius="20px"
       shadow="md"
@@ -88,5 +91,6 @@ export const Card: FC<Props> = memo((props) => {
         )}
       </Stack>
     </Box>
+    </SlideFade>
   );
 });

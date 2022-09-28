@@ -3,18 +3,18 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import { useAllPokemon } from "../../hooks/useAllPokemon";
 import { usePokemonDetailedView } from "../../hooks/usePokemonDetailedView";
 import { usePokemonTypeArr } from "../../hooks/usePokemonTypeArr";
-import { PokemonData, PokemonDetailedData } from "../../types/api/pokemon";
+import { PokemonData } from "../../types/api/pokemon";
 import { Card } from "../organisms/Card";
 import { Header } from "../organisms/Header";
 import { PokemonDetailModal } from "../organisms/PokemonDetailModal";
 
 export const TypeSearchPage = memo(() => {
-  
   const [arrIndex, setArrIndex] = useState(0);
 
   const { pokemonTypeArr } = usePokemonTypeArr();
   const { loadAllData, pokemons, loading } = useAllPokemon();
-  const {pokemonDetailedData,onOpenDetailedView,onClose,isOpen} = usePokemonDetailedView();
+  const { pokemonDetailedData, onOpenDetailedView, onClose, isOpen } =
+    usePokemonDetailedView();
 
   const compartPokemons = useCallback((dataArr: Array<PokemonData>) => {
     console.log("compart");
@@ -56,13 +56,23 @@ export const TypeSearchPage = memo(() => {
           {pokemons.map((pokemon) => {
             return (
               <WrapItem key={pokemon.id}>
-                <Card pokemon={pokemon} onOpen={()=>{onOpenDetailedView(pokemon)}}/>
+                <Card
+                  pokemon={pokemon}
+                  onOpen={() => {
+                    onOpenDetailedView(pokemon);
+                  }}
+                  loading={loading}
+                />
               </WrapItem>
             );
           })}
         </Wrap>
       )}
-      <PokemonDetailModal onClose={onClose} isOpen={isOpen} pokemon={pokemonDetailedData}/>
+      <PokemonDetailModal
+        onClose={onClose}
+        isOpen={isOpen}
+        pokemon={pokemonDetailedData}
+      />
     </>
   );
 });

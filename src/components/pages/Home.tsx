@@ -52,7 +52,7 @@ export const Home = memo(() => {
           {pokemons.map((pokemon) => {
             return (
               <WrapItem key={pokemon.id}>
-                <Card pokemon={pokemon} onOpen={()=>{onOpenDetailedView(pokemon)}} />
+                <Card pokemon={pokemon} onOpen={()=>{onOpenDetailedView(pokemon)}} loading={loading}/>
               </WrapItem>
             );
           })}
