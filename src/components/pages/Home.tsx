@@ -13,7 +13,7 @@ import { Header } from "../organisms/Header";
 import { PokemonDetailModal } from "../organisms/PokemonDetailModal";
 
 export const Home = memo(() => {
-  const { getAllPokemon, loadAllData, loading, pokemons } = useAllPokemon();
+  const { getAllPokemon, loadAllData, loading, pokemons ,isPending} = useAllPokemon();
   const { pokemonUrl, setPokemonUrl } = usePokemonUrl();
   const {pokemonDetailedData,onOpenDetailedView,onClose,isOpen} = usePokemonDetailedView();
 
@@ -43,7 +43,7 @@ export const Home = memo(() => {
         onClickLeft={() => setPokemonUrl(previous)}
         onClickRight={() => setPokemonUrl(next)}
       />
-      {loading ? (
+      {loading  || isPending? (
         <Center>
           <Spinner />
         </Center>

@@ -12,7 +12,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { FC, memo, useCallback, useState } from "react";
+import { FC, memo, useState } from "react";
 import { PokemonDetailedData } from "../../types/api/pokemon";
 
 type Props = {
@@ -51,9 +51,11 @@ export const PokemonDetailModal: FC<Props> = memo((props) => {
                   <h2>No Image</h2>
                 )}
                 {pokemon.types.length < 2 ? (
+                  <Box>
                   <Text as="a" fontSize="lg">
                     {pokemon.types[0].type.name}
                   </Text>
+                  </Box>
                 ) : (
                   <Flex justify="center">
                     <Text as="a" fontSize="lg">
@@ -65,6 +67,10 @@ export const PokemonDetailModal: FC<Props> = memo((props) => {
                     </Text>
                   </Flex>
                 )}
+                <Box>
+                  <Text>Height : {pokemon.height}</Text>
+                  <Text>Weight : {pokemon.weight}</Text>
+                </Box>
               </Box>
             </ModalBody>
           </ModalContent>

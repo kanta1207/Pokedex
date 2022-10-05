@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useTransition } from "react";
 import {
   PokeApi,
   PokemonData,
@@ -10,11 +10,13 @@ import { usePokemonUrl } from "./usePokemonUrl";
 export const useAllPokemon = () => {
   const [pokemons, setPokemons] = useState<Array<PokemonDetailedData>>([]);
   const [loading, setLoading] = useState(false);
+  const [isPending,startTransion] = useTransition();
 
   const { pokemonUrl } = usePokemonUrl();
 
   const getAllPokemon = useCallback(() => {
     console.log("getAllPokemon");
+    setLoading(true);
     return new Promise<PokeApi>((resolve, reject) => {
       axios
         .get(pokemonUrl as string)
@@ -26,7 +28,7 @@ export const useAllPokemon = () => {
   }, [pokemonUrl]);
 
   const loadAllData = useCallback(async (dataArr: Array<PokemonData>) => {
-    setLoading(true);
+    if(!loading)setLoading(true);
     console.log("loadAllData");
     const pokemonData = await Promise.all(
       ///複数のpromise処理を並列で行う
@@ -43,9 +45,11 @@ export const useAllPokemon = () => {
         return pokemonRecord;
       })
     );
-    setPokemons(pokemonData);
+    startTransion(()=>{
+      setPokemons(pokemonData);
+    })
   }, []);
-  return { getAllPokemon, setLoading, loading, pokemons, loadAllData};
+  return { getAllPokemon, setLoading, loading, pokemons, loadAllData,isPending};
 };
 
 //axios使わないver
